@@ -5,29 +5,21 @@ import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import {
   LayoutDashboard,
-  CheckSquare,
-  FolderKanban,
-  Target,
-  Calendar,
-  Zap,
-  ClipboardList,
-  MessageSquare,
+  Package,
+  ShoppingCart,
+  TrendingUp,
   Settings,
   LogOut,
-  Package,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { signOut } from 'next-auth/react'
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Tasks', href: '/tasks', icon: CheckSquare },
-  { name: 'Projects', href: '/projects', icon: FolderKanban },
-  { name: 'Goals', href: '/goals', icon: Target },
-  { name: 'Habits', href: '/habits', icon: Calendar },
-  { name: 'Energy', href: '/energy', icon: Zap },
-  { name: 'Weekly Review', href: '/review', icon: ClipboardList },
-  { name: 'Meetings', href: '/meetings', icon: MessageSquare },
+  { name: 'Products', href: '/products', icon: Package },
+  { name: 'Orders', href: '/orders', icon: ShoppingCart },
+  { name: 'Analytics', href: '/analytics', icon: TrendingUp },
+  { name: 'Settings', href: '/settings', icon: Settings },
 ]
 
 type SidebarProps = {
@@ -35,9 +27,10 @@ type SidebarProps = {
     name?: string | null
     email?: string | null
   }
+  onNavigate?: () => void
 }
 
-export function Sidebar({ user }: SidebarProps) {
+export function Sidebar({ user, onNavigate }: SidebarProps) {
   const pathname = usePathname()
 
   const handleSignOut = () => {
@@ -48,9 +41,13 @@ export function Sidebar({ user }: SidebarProps) {
     <div className="flex h-full w-64 flex-col border-r bg-card">
       {/* Logo */}
       <div className="flex h-16 items-center border-b px-6">
-        <Link href="/dashboard" className="flex items-center gap-2">
+        <Link
+          href="/dashboard"
+          className="flex items-center gap-2"
+          onClick={onNavigate}
+        >
           <Package className="h-6 w-6 text-primary" />
-          <span className="font-bold">Etsy Organizer</span>
+          <span className="font-bold">Etsy Organiser</span>
         </Link>
       </div>
 
@@ -62,6 +59,7 @@ export function Sidebar({ user }: SidebarProps) {
             <Link
               key={item.name}
               href={item.href}
+              onClick={onNavigate}
               className={cn(
                 'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                 isActive
@@ -82,13 +80,6 @@ export function Sidebar({ user }: SidebarProps) {
           <p className="text-sm font-medium truncate">{user.name}</p>
           <p className="text-xs text-muted-foreground truncate">{user.email}</p>
         </div>
-
-        <Link href="/settings">
-          <Button variant="ghost" className="w-full justify-start gap-3">
-            <Settings className="h-5 w-5" />
-            Settings
-          </Button>
-        </Link>
 
         <Button
           variant="ghost"
