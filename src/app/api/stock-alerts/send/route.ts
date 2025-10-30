@@ -1,5 +1,5 @@
 ﻿import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+import { prisma } from '@/lib/prisma';
 import { Resend } from 'resend';
 import StockAlertEmail from '@/emails/StockAlert';
 
